@@ -4,6 +4,7 @@
     {
         Block,
         Frequency,
-        Runs
+        Runs,
+        Even
     }
 }

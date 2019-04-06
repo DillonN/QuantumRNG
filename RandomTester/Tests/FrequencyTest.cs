@@ -13,10 +13,10 @@ namespace RandomTester.Tests
         {
             var sum = bytes
                 //.AsParallel()
-                .Sum(b => BitCount.BitTable[b] - 4);
+                .Sum(b => (BitCount.BitTable[b] - 4) * 2);
 
-            var stat = Math.Abs(sum) / Math.Sqrt(numBits / 8d);
-            var pValue = Helpers.ErrorFuncCompl(stat / Math.Pow(2, 0.5));
+            var stat = Math.Abs(sum) / Math.Sqrt(numBits);
+            var pValue = Helpers.ErrorFuncCompl(stat / Math.Sqrt(2));
 
             return pValue;
         }

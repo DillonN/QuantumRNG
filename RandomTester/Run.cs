@@ -25,7 +25,8 @@ namespace RandomTester
             {
                 new FrequencyTest(),
                 new BlockTest(),
-                new RunsTest()
+                new RunsTest(),
+                new EvenTest()
             };
 
             //var results = tests.Select(t => t.RunTest(data, (ulong) samples * 8)).ToList();
