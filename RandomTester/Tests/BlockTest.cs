@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using RandomTester.Enums;
 
 namespace RandomTester.Tests
 {
     internal class BlockTest : ITest
     {
-        public TestResults RunTest(IEnumerable<byte> bytes, ulong numBits)
+        public TestType Type => TestType.Block;
+
+        public double RunTest(IEnumerable<byte> bytes, ulong numBits)
         {
             var sum = bytes
-                .AsParallel()
+                //.AsParallel()
                 .Take((int) (numBits / 8))
                 .Sum(b =>
                 {
@@ -23,7 +26,7 @@ namespace RandomTester.Tests
             var x = chiSq / 2;
             var pValue = GammaUpper(a, x);
 
-            return new TestResults(nameof(BlockTest), pValue);
+            return pValue;
         }
 
         private static double LogGamma(double x)

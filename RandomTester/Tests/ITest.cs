@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using RandomTester.Enums;
 
 namespace RandomTester.Tests
 {
     internal interface ITest
     {
-        TestResults RunTest(IEnumerable<byte> bytes, ulong numBits);
+        TestType Type { get; }
+        double RunTest(IEnumerable<byte> bytes, ulong numBits);
     }
 }

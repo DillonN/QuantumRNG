@@ -11,7 +11,7 @@ namespace RandomTester.Tests.Tests
             var rt = new RunsTest();
             var p = rt.RunTest(SampleData.BitArray, 52);
 
-            Assert.AreEqual(0.0057, p.PValue, 0.00005);
+            Assert.AreEqual(0.0057, p, 0.00005);
         }
     }
 }

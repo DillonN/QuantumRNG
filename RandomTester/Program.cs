@@ -28,7 +28,18 @@ namespace RandomTester
                 }
             }
 
-            TestRunner.RunTest();
+            var results = TestRunner.RunTest();
+
+            foreach (var result in results)
+            {
+                Console.WriteLine($"{result.Type}: ");
+                Console.WriteLine($"\tInit time: {result.InitTime}");
+                Console.WriteLine("\tResults:");
+                foreach (var (key, value) in result.TestResults)
+                {
+                    Console.WriteLine($"\t\t{key}: {value:F6}");
+                }
+            }
 
 
             var rand = new Random();

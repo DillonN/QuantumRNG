@@ -1,47 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RandomTester.Enums;
 
 namespace RandomTester.Tests
 {
     internal class RunsTest : ITest
     {
-        public TestResults RunTest(IEnumerable<byte> bytes, ulong numBits)
+        public TestType Type => TestType.Runs;
+
+        public double RunTest(IEnumerable<byte> bytes, ulong numBits)
         {
-            var numOnes = bytes
-                .AsParallel()
-                .Sum(b => (double) BitCount.BitTable[b]);
+            //var numOnes = bytes
+            //    .AsParallel()
+            //    .Sum(b => (double) BitCount.BitTable[b]);
+
+            //var runs = RunCheckEnum(bytes)
+            //    .AsParallel()
+            //    .Sum();
+            var runs = 0ul;
+            var numOnes = 0d;
+            bool? last = null;
+            foreach (var b in bytes)
+            {
+                for (var i = 0; i < 8; i++)
+                {
+                    var current = (b & 1 << i) != 0;
+                    if (current) numOnes++;
+                    if (current != last) runs++;
+                    last = current;
+                }
+            }
 
             var prop = numOnes / numBits;
-
-            var runs = RunCheckEnum(bytes)
-                .AsParallel()
-                .LongCount(b => b);
-            //bool? last = null;
-            //foreach (var b in bytes)
-            //{
-            //    for (var i = 0; i < 8; i++)
-            //    {
-            //        var current = (b & 1 << i) != 0;
-            //        if (current != last) runs++;
-            //        last = current;
-            //    }
-            //}
 
             var num = Math.Abs(runs - 2 * numBits * prop * (1 - prop));
             var denom = 2 * Math.Sqrt(2d * numBits) * prop * (1 - prop);
             var pValue = Helpers.ErrorFuncCompl(num / denom);
 
-            return new TestResults(nameof(RunsTest), pValue);
+            return pValue;
         }
 
-        private static IEnumerable<bool> RunCheckEnum(IEnumerable<byte> bytes)
+        private static IEnumerable<long> RunCheckEnum(IEnumerable<byte> bytes)
         {
             using (var e1 = bytes.GetEnumerator())
             {
                 if (!e1.MoveNext()) throw new ArgumentException();
 
-                yield return true;
+                yield return 1;
 
                 while (true)
                 {
@@ -61,7 +67,7 @@ namespace RandomTester.Tests
                             second = (e1.Current & 1) != 0;
                         }
 
-                        yield return first != second;
+                        yield return first != second ? 1L : 0;
                     }
                 }
             }

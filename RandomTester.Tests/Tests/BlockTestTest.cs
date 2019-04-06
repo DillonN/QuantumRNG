@@ -10,7 +10,7 @@ namespace RandomTester.Tests.Tests
         {
 
             var bt = new BlockTest();
-            var p = bt.RunTest(SampleData.BitArray, 52).PValue;
+            var p = bt.RunTest(SampleData.BitArray, 52);
 
             Assert.AreEqual(0.9978, p, 0.00005);
         }
