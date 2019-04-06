@@ -18,20 +18,21 @@ namespace RandomTester
             InitTime = time;
         }
 
-        public static RunResult Average(IReadOnlyList<RunResult> results)
+        public static RunResult Average(IEnumerable<RunResult> results)
         {
-            if (results.Count <= 0)
-                throw new ArgumentException();
-
             var time = TimeSpan.Zero;
-            var type = results.First().Type;
 
             var tests = new Dictionary<TestType, double>();
 
+            RandomType type = default;
+
+            var count = 0;
+
             foreach (var result in results)
             {
-                if (result.Type != type)
-                    throw new ArgumentException();
+                count++;
+
+                type = result.Type;
 
                 time += result.InitTime;
 
@@ -48,12 +49,14 @@ namespace RandomTester
                 }
             }
 
+            var avgTests = new Dictionary<TestType, double>();
+
             foreach (var key in tests.Keys)
             {
-                tests[key] /= results.Count;
+                avgTests[key] = tests[key] / count;
             }
 
-            return new RunResult(tests, type, time / results.Count);
+            return new RunResult(avgTests, type, time / count);
         }
     }
 }
