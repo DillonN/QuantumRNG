@@ -14,7 +14,7 @@ namespace RandomTester.Wrappers
 
         public SecRandomWrapper()
         {
-            _r = RandomNumberGenerator.Create();
+            _r = new RNGCryptoServiceProvider();
         }
 
         protected override IReadOnlyList<byte> InitData(int samples)

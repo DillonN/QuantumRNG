@@ -17,7 +17,7 @@ namespace RandomTester
             _r = r;
         }
 
-        public RunResult RunTest(int samples)
+        public RunResult RunTest(int samples, bool justTime = false)
         {
             var data = _r.TimeAndInitData(samples, out var initTime);
 
@@ -29,6 +29,8 @@ namespace RandomTester
                 new EvenTest()
             };
 
+            if (justTime) tests.Clear();
+
             //var results = tests.Select(t => t.RunTest(data, (ulong) samples * 8)).ToList();
 
             var results = new Dictionary<TestType, double>();
@@ -38,7 +40,7 @@ namespace RandomTester
                 results[test.Type] = test.RunTest(data, (ulong) samples * 8);
             }
 
-            return new RunResult(results, _r.Type, initTime);
+            return new RunResult(results, _r.Type, initTime, samples * 8);
         }
 
         public void Dispose()

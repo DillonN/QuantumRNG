@@ -11,11 +11,17 @@ namespace RandomTester
         public RandomType Type { get; }
         public TimeSpan InitTime { get; }
 
-        public RunResult(IReadOnlyDictionary<TestType, double> results, RandomType type, TimeSpan time)
+        public int Count { get; }
+
+        public double Bps => Count / InitTime.TotalSeconds;
+        public double Mbps => Count / InitTime.TotalSeconds / 1000000;
+
+        public RunResult(IReadOnlyDictionary<TestType, double> results, RandomType type, TimeSpan time, int count)
         {
             TestResults = results;
             Type = type;
             InitTime = time;
+            Count = count;
         }
 
         public static RunResult Average(IEnumerable<RunResult> results)
@@ -27,12 +33,14 @@ namespace RandomTester
             RandomType type = default;
 
             var count = 0;
+            var bitCount = 0;
 
             foreach (var result in results)
             {
                 count++;
 
                 type = result.Type;
+                bitCount = result.Count;
 
                 time += result.InitTime;
 
@@ -56,7 +64,7 @@ namespace RandomTester
                 avgTests[key] = tests[key] / count;
             }
 
-            return new RunResult(avgTests, type, time / count);
+            return new RunResult(avgTests, type, time / count, bitCount);
         }
     }
 }

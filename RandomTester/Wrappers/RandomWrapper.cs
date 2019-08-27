@@ -24,8 +24,6 @@ namespace RandomTester.Wrappers
 
             time = stopwatch.Elapsed;
 
-            Dispose();
-
             return data;
         }
 
